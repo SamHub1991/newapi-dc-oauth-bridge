@@ -1,0 +1,19 @@
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    tzdata \
+    libmariadb3 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY new-api /app/new-api
+COPY web/default/dist /app/web/default/dist
+COPY web/classic/dist /app/web/classic/dist
+
+RUN mkdir -p /data
+
+EXPOSE 3000
+
+ENTRYPOINT ["/app/new-api"]
